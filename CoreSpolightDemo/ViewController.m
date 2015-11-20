@@ -11,7 +11,7 @@
 
 
 @interface ViewController ()
-
+@property (nonatomic, strong) NSUserActivity *userActivity;
 @end
 
 @implementation ViewController
@@ -22,7 +22,7 @@
     self.myImage = [[UIImageView alloc] initWithImage:image];
     [self.view addSubview:self.myImage];
     [self createSearchIndex];
-    [self createUserActivity];
+//    [self createUserActivity];
     // Do any additional setup after loading the view, typically from a nib.
 }
 
@@ -44,8 +44,8 @@
     int i=0;
     for (NSString *title in titles) {
         CSSearchableItemAttributeSet *attributeSet = [[CSSearchableItemAttributeSet alloc] initWithItemContentType:@"corespolight"];
-        //         CSLocalizedString *displayName = [[CSLocalizedString alloc] initWithLocalizedStrings:@{@"en":@"movie", @"fr":@"Chanson",@"zh":title}];
-        //        attributeSet.displayName = displayName.localizedString;
+                 CSLocalizedString *displayName = [[CSLocalizedString alloc] initWithLocalizedStrings:@{@"en":@"zhuluoji", @"fr":@"Chanson",@"zh":title}];
+                attributeSet.displayName = displayName.localizedString;
         
         attributeSet.title = title;
         attributeSet.contentDescription = [NSString stringWithFormat:@"我看过的最好的一步电影就是:%@", title];
@@ -65,21 +65,20 @@
 
 - (void)createUserActivity
 {
-    NSUserActivity *userActivity = [[NSUserActivity alloc] initWithActivityType:@"com.gideon.history"];
+    self.userActivity = [[NSUserActivity alloc] initWithActivityType:@"com.gideon.history"];
     CSSearchableItemAttributeSet *attributeSet = [[CSSearchableItemAttributeSet alloc] initWithItemContentType:@"corespolight"];
     attributeSet.title = @"玩命速递";
     attributeSet.contentDescription = [NSString stringWithFormat:@"我看过的最好的一步电影就是:%@", @"玩命速递"];
     UIImage *image = [UIImage imageNamed:@"img1.jpg"];
     NSData *data = UIImageJPEGRepresentation(image, 1.0);
     attributeSet.thumbnailData = data;
-    userActivity.contentAttributeSet =attributeSet;
+    self.userActivity.contentAttributeSet =attributeSet;
     
-    userActivity.title = @"玩命速递";
-    userActivity.keywords = [[NSSet alloc] initWithArray:@[@"电影",@"好看的",@"大片"]];
-    userActivity.userInfo = @{@"name":@"Gidoen"};
-    userActivity.eligibleForSearch = YES;
-    [userActivity becomeCurrent];
-    
+    self.userActivity.title = @"玩命速递";
+    self.userActivity.keywords = [[NSSet alloc] initWithArray:@[@"电影",@"好看的",@"大片"]];
+    self.userActivity.userInfo = @{@"name":@"Gidoen"};
+    self.userActivity.eligibleForSearch = YES;
+    [self.userActivity becomeCurrent];
 }
 
 - (void)restoreUserActivityState:(NSUserActivity *)activity
